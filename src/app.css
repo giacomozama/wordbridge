@@ -1,0 +1,47 @@
+@font-face {
+  font-family: JetBrainsMono; /* set name */
+  src: url(/font.ttf); /* url of the font */
+}
+
+body {
+  font-family: JetBrainsMono;
+  background-color: #222;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+}
+
+#app {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+}
+
+button {
+  appearance: none;
+  border: none;
+  color: white;
+  background-color: #fff0;
+  font-family: JetBrainsMono;
+  border: 1px solid #fff8;
+  border-radius: 8px;
+  text-transform: uppercase;
+  padding: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #fff2;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  max-width: min(100vw, 600px);
+  margin: 16px;
+}
