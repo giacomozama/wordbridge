@@ -1,27 +1,27 @@
 <script lang="ts">
   let {
-    guesses,
+    steps,
     targetWord,
     onGoBack,
   }: {
-    guesses: string[];
+    steps: string[];
     targetWord: string;
     onGoBack: (index: number) => void;
   } = $props();
 </script>
 
-<div class="guesses-container">
-  {#each [...guesses].reverse() as guess, ri}
-    {@const i = guesses.length - 1 - ri}
+<div class="steps-container">
+  {#each [...steps].reverse() as step, ri}
+    {@const i = steps.length - 1 - ri}
     <div>
       <div>
-        {#if i > 0}<span class="guess-number">{i}</span>{/if}
+        {#if i > 0}<span class="step-number">{i}</span>{/if}
       </div>
       <div>
         {#each [0, 1, 2, 3] as i}
           <span
-            class={guess.charAt(i) === targetWord.charAt(i) ? "correct" : ""}
-            >{guess.charAt(i)}</span
+            class={step.charAt(i) === targetWord.charAt(i) ? "correct" : ""}
+            >{step.charAt(i)}</span
           >
         {/each}
       </div>
@@ -33,7 +33,7 @@
               onGoBack(i);
               event.currentTarget.blur();
             }}
-            title="Undo up to this guess">↺</button
+            title="Undo up to this step">↺</button
           >
         {/if}
       </div>
@@ -42,7 +42,7 @@
 </div>
 
 <style>
-  .guesses-container {
+  .steps-container {
     border-radius: 8px;
     border: 1px solid #fff4;
     flex: 1;
@@ -51,12 +51,12 @@
     background-color: #1c1c1c;
   }
 
-  .guesses-container > div {
+  .steps-container > div {
     display: flex;
     overflow: auto;
   }
 
-  .guesses-container > div > div {
+  .steps-container > div > div {
     padding: 12px;
     display: flex;
     align-items: center;
@@ -66,26 +66,26 @@
     justify-content: center;
   }
 
-  .guesses-container > div > div:last-child {
+  .steps-container > div > div:last-child {
     justify-content: end;
   }
 
-  .guesses-container > div:nth-child(2n) {
+  .steps-container > div:nth-child(2n) {
     background-color: #ffffff04;
   }
 
-  .guesses-container > div:nth-child(2n + 1) {
+  .steps-container > div:nth-child(2n + 1) {
     background-color: #ffffff08;
   }
 
-  .guesses-container > div > div > span {
+  .steps-container > div > div > span {
     padding: 8px;
     background-color: #444;
     border-radius: 4px;
     border: 1px solid #fff3;
   }
 
-  .guess-number {
+  .step-number {
     background: none !important;
     border: none !important;
     font-size: 0.9rem;
@@ -94,7 +94,7 @@
     margin-right: auto;
   }
 
-  .guesses-container > div > div > span.correct {
+  .steps-container > div > div > span.correct {
     background-color: green;
     border: 1px solid #fff3;
   }

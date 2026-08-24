@@ -5,15 +5,15 @@
     DICT_SET,
     isNeighbor,
     loadPairsFromUrl,
-    minimumGuesses,
+    minimumSteps,
     bestPath,
   } from "./lib/game.ts";
   import NewGameCard, {
     type Difficulty,
   } from "./components/NewGameCard.svelte";
   import WordInfoCard from "./components/WordInfoCard.svelte";
-  import GuessPrompt from "./components/GuessPrompt.svelte";
-  import GuessesContainer from "./components/GuessesContainer.svelte";
+  import StepPrompt from "./components/StepPrompt.svelte";
+  import StepsContainer from "./components/StepsContainer.svelte";
   import WinModal from "./components/WinModal.svelte";
   import HowToPlayModal from "./components/HowToPlayModal.svelte";
   import DictionaryModal from "./components/DictionaryModal.svelte";
@@ -21,23 +21,23 @@
   let difficulty = $state<Difficulty>("medium");
   let startWord = $state("____");
   let targetWord = $state("____");
-  let guesses = $state<string[]>([]);
+  let steps = $state<string[]>([]);
   let prompt = $state("");
   let label = $state("Enter a word");
   let labelError = $state(false);
   let showWinModal = $state(false);
-  let winGuesses = $state(0);
-  let winMinGuesses = $state<number | null>(null);
+  let winSteps = $state(0);
+  let winMinSteps = $state<number | null>(null);
   let winPath = $state<string[] | null>(null);
   let showHowToPlay = $state(false);
   let showDictionary = $state(false);
-  let guessPrompt = $state<{
+  let stepPrompt = $state<{
     focus: () => void;
     focusFirst: () => void;
     focusLastFilled: (length: number) => void;
   } | null>(null);
 
-  const STORAGE_KEY = "wordbridge-game-v1";
+  const STORAGE_KEY = "wordbridge-game-v2";
   const HOW_TO_PLAY_SEEN_KEY = "wordbridge-how-to-play-seen";
 
   function saveGame() {
@@ -45,10 +45,10 @@
       difficulty,
       startWord,
       targetWord,
-      guesses,
+      steps,
       prompt,
-      winGuesses,
-      winMinGuesses,
+      winSteps,
+      winMinSteps,
       winPath,
       showWinModal,
     };
@@ -65,8 +65,8 @@
         data === null ||
         typeof data.startWord !== "string" ||
         typeof data.targetWord !== "string" ||
-        !Array.isArray(data.guesses) ||
-        data.guesses.length === 0
+        !Array.isArray(data.steps) ||
+        data.steps.length === 0
       ) {
         return false;
       }
@@ -79,14 +79,14 @@
       }
       startWord = data.startWord;
       targetWord = data.targetWord;
-      guesses = data.guesses;
+      steps = data.steps;
       prompt =
         typeof data.prompt === "string"
           ? data.prompt.replace(/[^a-zA-Z]/g, "")
           : "";
-      winGuesses = typeof data.winGuesses === "number" ? data.winGuesses : 0;
-      winMinGuesses =
-        typeof data.winMinGuesses === "number" ? data.winMinGuesses : null;
+      winSteps = typeof data.winSteps === "number" ? data.winSteps : 0;
+      winMinSteps =
+        typeof data.winMinSteps === "number" ? data.winMinSteps : null;
       winPath = Array.isArray(data.winPath)
         ? data.winPath.filter((w: unknown) => typeof w === "string")
         : null;
@@ -98,7 +98,7 @@
   }
 
   $effect(() => {
-    if (startWord !== "____" && guesses.length > 0) {
+    if (startWord !== "____" && steps.length > 0) {
       saveGame();
     }
   });
@@ -138,38 +138,38 @@
         targetWord = t;
       }
 
-      guesses = [startWord];
+      steps = [startWord];
       label = "Enter a word";
       labelError = false;
       prompt = "";
       showWinModal = false;
-      winGuesses = 0;
-      winMinGuesses = null;
+      winSteps = 0;
+      winMinSteps = null;
       winPath = null;
-      guessPrompt?.focusFirst();
+      stepPrompt?.focusFirst();
     });
   }
 
-  function validateGuess(guess: string): boolean {
+  function validateStep(step: string): boolean {
     label = "Enter a word";
     labelError = false;
-    if (guess.length !== 4) {
+    if (step.length !== 4) {
       label = "Words are exactly 4 letters long";
       labelError = true;
       return false;
     }
-    if (!DICT_SET.has(guess)) {
+    if (!DICT_SET.has(step)) {
       label = "Not in the dictionary";
       labelError = true;
       return false;
     }
-    if (guesses.includes(guess)) {
-      label = "You already guessed that word";
+    if (steps.includes(step)) {
+      label = "You already stepped that word";
       labelError = true;
       return false;
     }
-    const prev = guesses[guesses.length - 1];
-    if (!isNeighbor(prev, guess)) {
+    const prev = steps[steps.length - 1];
+    if (!isNeighbor(prev, step)) {
       label = "Change exactly one letter (or reverse the previous word)";
       labelError = true;
       return false;
@@ -177,18 +177,18 @@
     return true;
   }
 
-  function submitGuess(): boolean {
-    const guess = prompt.toUpperCase();
-    if (!validateGuess(guess)) {
-      guessPrompt?.focusLastFilled(guess.length);
+  function submitStep(): boolean {
+    const step = prompt.toUpperCase();
+    if (!validateStep(step)) {
+      stepPrompt?.focusLastFilled(step.length);
       return false;
     }
-    guesses = [...guesses, guess];
+    steps = [...steps, step];
     prompt = "";
-    if (guess === targetWord) {
-      winGuesses = guesses.length - 1;
-      const min = minimumGuesses(startWord, targetWord);
-      winMinGuesses = min === null ? null : min - 1;
+    if (step === targetWord) {
+      winSteps = steps.length - 1;
+      const min = minimumSteps(startWord, targetWord);
+      winMinSteps = min === null ? null : min - 1;
       winPath = bestPath(startWord, targetWord);
       showWinModal = true;
     }
@@ -196,20 +196,20 @@
   }
 
   function undoLast() {
-    if (guesses.length <= 1) return;
-    prompt = guesses[guesses.length - 1];
-    guesses = guesses.slice(0, -1);
+    if (steps.length <= 1) return;
+    prompt = steps[steps.length - 1];
+    steps = steps.slice(0, -1);
     label = "Enter a word";
     labelError = false;
   }
 
   function goBackTo(index: number) {
-    if (index <= 0 || index >= guesses.length) return;
-    prompt = guesses[index];
-    guesses = guesses.slice(0, index);
+    if (index <= 0 || index >= steps.length) return;
+    prompt = steps[index];
+    steps = steps.slice(0, index);
     label = "Enter a word";
     labelError = false;
-    guessPrompt?.focus();
+    stepPrompt?.focus();
   }
 
   function setDifficulty(newDifficulty: Difficulty) {
@@ -234,16 +234,16 @@
 
   <WordInfoCard {startWord} {targetWord} />
 
-  <GuessPrompt
-    bind:this={guessPrompt}
+  <StepPrompt
+    bind:this={stepPrompt}
     bind:value={prompt}
     {label}
     error={labelError}
-    onEnter={submitGuess}
+    onEnter={submitStep}
     onUndo={undoLast}
   />
 
-  <GuessesContainer {guesses} {targetWord} onGoBack={goBackTo} />
+  <StepsContainer {steps} {targetWord} onGoBack={goBackTo} />
 
   <div class="new-game-divider">
     <NewGameCard
@@ -256,8 +256,8 @@
 
 {#if showWinModal}
   <WinModal
-    guesses={winGuesses}
-    minGuesses={winMinGuesses}
+    steps={winSteps}
+    minSteps={winMinSteps}
     path={winPath}
     onClose={() => (showWinModal = false)}
   />

@@ -9,15 +9,18 @@ body {
   text-transform: uppercase;
   color: #fff;
   margin: 0;
-  min-height: 100vh;
-  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
   display: flex;
 }
 
 #app {
   display: flex;
   flex: 1;
+  min-height: 0;
   justify-content: center;
+  overflow: hidden;
 }
 
 button {
@@ -42,6 +45,7 @@ main {
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-height: 0;
   max-width: min(100vw, 600px);
   margin: 16px;
 }

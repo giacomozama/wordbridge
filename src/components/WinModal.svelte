@@ -1,12 +1,12 @@
 <script lang="ts">
   let {
-    guesses,
-    minGuesses,
+    steps,
+    minSteps,
     path,
     onClose,
   }: {
-    guesses: number;
-    minGuesses: number | null;
+    steps: number;
+    minSteps: number | null;
     path: string[] | null;
     onClose: () => void;
   } = $props();
@@ -32,9 +32,9 @@
   >
     <h2>You win!</h2>
     <p>
-      Solved in {guesses} guesses.
-      {#if minGuesses !== null}
-        The minimum was <b>{minGuesses}</b>.
+      Solved in {steps} steps.
+      {#if minSteps !== null}
+        The minimum was <b>{minSteps}</b>.
       {:else}
         No minimum path found.
       {/if}

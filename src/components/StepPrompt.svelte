@@ -132,17 +132,17 @@
   }
 </script>
 
-<div class="guess-prompt">
-  <div class="guess-prompt-label" class:error>
+<div class="step-prompt">
+  <div class="step-prompt-label" class:error>
     {label}
   </div>
-  <div class="guess-prompt-input-container">
+  <div class="step-prompt-input-container">
     {#each Array(LENGTH) as _, index}
       <input
         type="text"
         maxlength="1"
         bind:this={inputs[index]}
-        name="guess"
+        name="step"
         inputmode="text"
         autocomplete="off"
         autocorrect="off"
@@ -157,7 +157,7 @@
 </div>
 
 <style>
-  .guess-prompt {
+  .step-prompt {
     border-radius: 8px;
     border: 1px solid #fff4;
     margin-bottom: 8px;
@@ -167,13 +167,13 @@
     align-items: center;
   }
 
-  .guess-prompt-input-container {
+  .step-prompt-input-container {
     display: flex;
     gap: 8px;
     position: relative;
   }
 
-  .guess-prompt input {
+  .step-prompt input {
     appearance: none;
     font-size: 2.5rem;
     font-family: JetBrainsMono;
@@ -189,12 +189,12 @@
     padding: 0;
   }
 
-  .guess-prompt input:focus {
+  .step-prompt input:focus {
     border-color: #fff;
     background-color: #fff2;
   }
 
-  .guess-prompt-label {
+  .step-prompt-label {
     font-size: 0.75rem;
     font-weight: 800;
     opacity: 0.7;
@@ -202,7 +202,7 @@
     margin-bottom: 8px;
   }
 
-  .guess-prompt-label.error {
+  .step-prompt-label.error {
     color: #f44;
   }
 </style>

@@ -7,10 +7,10 @@ Play it at **https://giacomozama.github.io/wordbridge/**
 ## Rules
 
 1. You start on a start word and must reach the target word.
-2. Each guess must be a word in the dictionary.
-3. Each guess must differ from the previous word by exactly one letter.
+2. Each step must be a word in the dictionary.
+3. Each step must differ from the previous word by exactly one letter.
 4. You can also reverse the previous word, as long as it forms a valid word.
-5. Reach the target word to win. Try to do it in as few guesses as possible.
+5. Reach the target word to win. Try to do it in as few steps as possible.
 
 ## Development
 

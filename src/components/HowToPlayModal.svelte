@@ -25,9 +25,9 @@
       <li>
         You start on a <b>start word</b> and must reach the <b>target word</b>.
       </li>
-      <li>Each guess must be a word in the <b>dictionary</b>.</li>
+      <li>Each step must be a word in the <b>dictionary</b>.</li>
       <li>
-        Each guess must differ from the previous word by <b
+        Each step must differ from the previous word by <b
           >exactly one letter</b
         >.
       </li>
@@ -37,7 +37,7 @@
       </li>
       <li>
         Reach the target word to win. Try to do it in <b
-          >as few guesses as possible</b
+          >as few steps as possible</b
         >.
       </li>
     </ol>

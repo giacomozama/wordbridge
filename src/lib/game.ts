@@ -88,7 +88,7 @@ function neighbors(word: string): string[] {
   return result;
 }
 
-export function minimumGuesses(start: string, target: string): number | null {
+export function minimumSteps(start: string, target: string): number | null {
   if (start === target) return 1;
   const visited = new Set<string>([start]);
   let frontier: string[] = [start];
