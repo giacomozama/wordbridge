@@ -5,10 +5,23 @@
 
   let filter = $state("");
 
+  function buildPattern(filter: string): RegExp | null {
+    if (filter.length === 0) return null;
+    const hasWildcard = /[*._]/.test(filter);
+    let out = "";
+    for (const ch of filter) {
+      out +=
+        ch === "*" || ch === "." || ch === "_"
+          ? "."
+          : ch.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+    return hasWildcard ? new RegExp(`^${out}$`, "i") : new RegExp(out, "i");
+  }
+
+  const pattern = $derived(buildPattern(filter));
+
   const filtered = $derived(
-    filter.length === 0
-      ? DICT
-      : DICT.filter((word) => word.includes(filter.toUpperCase())),
+    pattern === null ? DICT : DICT.filter((word) => pattern.test(word)),
   );
 </script>
 
@@ -34,7 +47,7 @@
     <input
       type="text"
       maxlength="4"
-      placeholder="Filter..."
+      placeholder="Filter (* . _ = any char)"
       bind:value={filter}
     />
     <div class="words">
