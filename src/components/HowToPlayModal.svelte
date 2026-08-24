@@ -22,11 +22,24 @@
   >
     <h2>How to play</h2>
     <ol>
-      <li>You start on a start word and must reach the target word.</li>
-      <li>Each guess must be a word in the dictionary.</li>
-      <li>Each guess must differ from the previous word by exactly one letter.</li>
-      <li>You can also reverse the previous word, as long as it forms a valid word.</li>
-      <li>Reach the target word to win. Try to do it in as few guesses as possible.</li>
+      <li>
+        You start on a <b>start word</b> and must reach the <b>target word</b>.
+      </li>
+      <li>Each guess must be a word in the <b>dictionary</b>.</li>
+      <li>
+        Each guess must differ from the previous word by <b
+          >exactly one letter</b
+        >.
+      </li>
+      <li>
+        You can also <b>reverse</b> the previous word, as long as it forms a valid
+        word.
+      </li>
+      <li>
+        Reach the target word to win. Try to do it in <b
+          >as few guesses as possible</b
+        >.
+      </li>
     </ol>
     <button onclick={onClose}>Close</button>
   </div>
@@ -63,6 +76,8 @@
     text-align: left;
     margin: 0 0 16px 0;
     padding-left: 20px;
+    font-family: sans-serif;
+    text-transform: none;
   }
 
   .modal li {

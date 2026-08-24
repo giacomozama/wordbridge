@@ -81,7 +81,9 @@
       targetWord = data.targetWord;
       guesses = data.guesses;
       prompt =
-        typeof data.prompt === "string" ? data.prompt.replace(/[^a-zA-Z]/g, "") : "";
+        typeof data.prompt === "string"
+          ? data.prompt.replace(/[^a-zA-Z]/g, "")
+          : "";
       winGuesses = typeof data.winGuesses === "number" ? data.winGuesses : 0;
       winMinGuesses =
         typeof data.winMinGuesses === "number" ? data.winMinGuesses : null;
@@ -129,6 +131,13 @@
 
       startWord = DICT[startIndex];
       targetWord = DICT[endIndex];
+
+      if (Math.random() > 0.5) {
+        const t = startWord;
+        startWord = targetWord;
+        targetWord = t;
+      }
+
       guesses = [startWord];
       label = "Enter a word";
       labelError = false;
@@ -235,7 +244,7 @@
   />
 
   <GuessesContainer {guesses} {targetWord} onGoBack={goBackTo} />
-  
+
   <div class="new-game-divider">
     <NewGameCard
       {difficulty}
@@ -244,6 +253,23 @@
     />
   </div>
 </main>
+
+{#if showWinModal}
+  <WinModal
+    guesses={winGuesses}
+    minGuesses={winMinGuesses}
+    path={winPath}
+    onClose={() => (showWinModal = false)}
+  />
+{/if}
+
+{#if showHowToPlay}
+  <HowToPlayModal onClose={closeHowToPlay} />
+{/if}
+
+{#if showDictionary}
+  <DictionaryModal onClose={() => (showDictionary = false)} />
+{/if}
 
 <style>
   .top-buttons {
@@ -286,20 +312,3 @@
     background-color: #fff2;
   }
 </style>
-
-{#if showWinModal}
-  <WinModal
-    guesses={winGuesses}
-    minGuesses={winMinGuesses}
-    path={winPath}
-    onClose={() => (showWinModal = false)}
-  />
-{/if}
-
-{#if showHowToPlay}
-  <HowToPlayModal onClose={closeHowToPlay} />
-{/if}
-
-{#if showDictionary}
-  <DictionaryModal onClose={() => (showDictionary = false)} />
-{/if}

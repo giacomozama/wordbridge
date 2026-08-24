@@ -13,12 +13,12 @@
 <div class="guesses-container">
   {#each [...guesses].reverse() as guess, ri}
     {@const i = guesses.length - 1 - ri}
+    <div>
       <div>
-        <div>
-          {#if i > 0}<span class="guess-number">{i}</span>{/if}
-        </div>
-        <div>
-          {#each [0, 1, 2, 3] as i}
+        {#if i > 0}<span class="guess-number">{i}</span>{/if}
+      </div>
+      <div>
+        {#each [0, 1, 2, 3] as i}
           <span
             class={guess.charAt(i) === targetWord.charAt(i) ? "correct" : ""}
             >{guess.charAt(i)}</span
@@ -48,6 +48,7 @@
     flex: 1;
     min-height: 0;
     overflow: auto;
+    background-color: #1c1c1c;
   }
 
   .guesses-container > div {
@@ -67,6 +68,10 @@
 
   .guesses-container > div > div:last-child {
     justify-content: end;
+  }
+
+  .guesses-container > div:nth-child(2n) {
+    background-color: #ffffff04;
   }
 
   .guesses-container > div:nth-child(2n + 1) {
